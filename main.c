@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <gl/glut.h>
+#include <time.h>
 #include <string.h>
 
 float posicaoXObjeto = 0;
@@ -9,6 +10,7 @@ float cores[15] = {0.0f, 0.15f, 0.2f, 0.25f, 0.3f, 0.4, 0.5f, 0.6f, 0.65f, 0.7f,
 int a = 0;
 int b = 0;
 int c = 14;
+unsigned short int start = 1;
 
 int VerificaPosicao(float x, float y);
 void RenderString(float x, float y,  void *font, const char* string);
@@ -190,6 +192,7 @@ void MudaCores(int button, int state, int x, int y)
 {
     if (button == GLUT_LEFT_BUTTON)
          if (state == GLUT_DOWN) {
+         	start = 0;
          	a = rand() % 15;
 			b = rand() % 15;
 			c = rand() % 15;
@@ -204,7 +207,10 @@ void Desenha(void)
                    
     // Limpa a janela de visualização com a cor de fundo especificada
     glClear(GL_COLOR_BUFFER_BIT);
-     glClearColor(cores[a], cores[c], cores[c], 1.0f);
+    if(start)
+    	glClearColor(14, 14, 14, 1.0f);
+    else
+     glClearColor(cores[a], cores[c], cores[a], 1.0f);
     DesenhaLabirinto();
   	DesenhaObjeto();
   	VerificaColisao();
