@@ -48,14 +48,13 @@ void DesenhaObjeto(void)
 {
 	char novoId[9];
 	
-	snprintf(novoId, 8, "Vidas: %d", vidas);
+	snprintf(novoId, 9, "Vidas: %d", vidas);
 	RenderString(10.0f, 275.0f, GLUT_BITMAP_HELVETICA_10, novoId);
 	glTranslatef(posicaoXObjeto, posicaoYObjeto, 0.0f);
 	
 	glBegin(GL_TRIANGLES);
         glColor3f(cores[c], cores[b], cores[a]);
 		// Especifica que a cor corrente é preta
-		glColor3f(1.0f, 0.0f, 0.0f);
 		glVertex2f(81.25,51.0);
 		glVertex2f(93.75,51.0);
 		glVertex2f(87.5,60.82);
@@ -205,6 +204,7 @@ void Desenha(void)
                    
     // Limpa a janela de visualização com a cor de fundo especificada
     glClear(GL_COLOR_BUFFER_BIT);
+     glClearColor(cores[a], cores[c], cores[c], 1.0f);
     DesenhaLabirinto();
   	DesenhaObjeto();
   	VerificaColisao();
