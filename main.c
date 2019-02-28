@@ -1,53 +1,83 @@
 #include <windows.h>
 #include <gl/glut.h>
 
-// Função callback chamada para fazer o desenho
+float posicaoXObjeto = 0;
+float posicaoYObjeto = 0;
+
 void DesenhaLabirinto(void)
+{
+    glBegin(GL_LINE_STRIP);
+    	// Especifica que a cor corrente é preta
+        glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f(100.0,50.0);
+		glVertex2f(100.0,150.0);
+		glVertex2f(50.0,150.0);
+		glVertex2f(50.0,200.0);
+		glVertex2f(150.0,200.0); 
+		glVertex2f(150.0,100.0);  
+		glVertex2f(250.0,100.0);  
+		glVertex2f(250.0,250.0);
+		glVertex2f(300.0,250.0);        
+    glEnd();
+	 
+	glBegin(GL_LINE_STRIP);
+		// Especifica que a cor corrente é preta
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f(75,50);
+		glVertex2f(75,125);  
+		glVertex2f(25,125); 
+		glVertex2f(25,225);
+		glVertex2f(175,225);
+		glVertex2f(175,125); 
+		glVertex2f(225,125); 
+		glVertex2f(225,275); 
+		glVertex2f(300,275);       
+    glEnd();
+}
+
+void DesenhaObjeto(void)
+{
+	glTranslatef(posicaoXObjeto, posicaoYObjeto, 0.0f);
+	glBegin(GL_TRIANGLES);
+		// Especifica que a cor corrente é preta
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex2f(81.25,50.0);
+		glVertex2f(93.75,50.0);
+		glVertex2f(87.5,60.82);
+	glEnd();
+}
+
+void Desenha(void)
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
                    
     // Limpa a janela de visualização com a cor de fundo especificada
     glClear(GL_COLOR_BUFFER_BIT);
-  
-    // Desenha um quadrado preenchido com a cor corrente
-    glBegin(GL_LINE_STRIP);
-    	// Especifica que a cor corrente é preta
-        glColor3f(0.0f, 0.0f, 0.0f);
-		glVertex2i(100,50);
-		glVertex2i(100,150);
-		glVertex2i(50,150);
-		glVertex2i(50,200);
-		glVertex2i(150,200); 
-		glVertex2i(150,100);  
-		glVertex2i(250,100);  
-		glVertex2i(250,250);
-		glVertex2i(300,250);        
-    glEnd();
-	 
-	glBegin(GL_LINE_STRIP);
-		// Especifica que a cor corrente é preta
-		glColor3f(0.0f, 0.0f, 0.0f);
-		glVertex2i(75,50);
-		glVertex2i(75,125);  
-		glVertex2i(25,125); 
-		glVertex2i(25,225);
-		glVertex2i(175,225);
-		glVertex2i(175,125); 
-		glVertex2i(225,125); 
-		glVertex2i(225,275); 
-		glVertex2i(300,275);       
-    glEnd();
-    DesenhaObjeto();
+    DesenhaLabirinto();
+  	DesenhaObjeto();
+  	
     // Executa os comandos OpenGL
     glFlush();
 }
 
-void DesenhaObjeto(void)
+void MovimentaObjeto(int key, int x, int y)
 {
-	glBegin(GL_TRIANGLES);
-				
-	glEnd();
+	switch (key) {
+            case GLUT_KEY_LEFT: 
+            	posicaoXObjeto--;
+            	break;
+            case GLUT_KEY_UP:
+            	posicaoYObjeto++;
+            	break;
+            case GLUT_KEY_RIGHT:
+            	posicaoXObjeto++;
+                break;
+            case GLUT_KEY_DOWN:
+            	posicaoYObjeto--;
+           		break;
+    }
+    glutPostRedisplay();
 }
 
 // Inicializa parâmetros de rendering
@@ -83,9 +113,10 @@ int main(void)
      glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
      glutInitWindowSize(400,350);
      glutInitWindowPosition(10,10);
-     glutCreateWindow("Quadrado");
+     glutCreateWindow("Labirinto");
      glutDisplayFunc(Desenha);
 	 glutReshapeFunc(AlteraTamanhoJanela);
+	 glutSpecialFunc(MovimentaObjeto);
      Inicializa();
      glutMainLoop();
 }
